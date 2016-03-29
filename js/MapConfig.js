@@ -2,7 +2,7 @@
  * @author jpgarzon
  */
 var zoomDiplay=12;//Zoom inical del mapa
-var layerEep;
+var layerPredial,layerEep;
 
 /***********************************
  // CONFIGURACION DE MAPA
