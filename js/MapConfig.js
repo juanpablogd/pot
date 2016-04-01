@@ -2,7 +2,8 @@
  * @author jpgarzon
  */
 var zoomDiplay=12;//Zoom inical del mapa
-var layerPredial,layerEep;
+var layerPredial,layerEep,layerHidrografia,layerLimiteMpio,layerVeredal,layerMot;
+var filtrado;
 
 /***********************************
  // CONFIGURACION DE MAPA
@@ -19,7 +20,7 @@ var mymap = L.map('map', {
 
 var BMStreets=  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
 	attribution: ''
-}).addTo(mymap);
+});
 
 var BMTopo=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
 	attribution: ''
@@ -33,7 +34,7 @@ var MapQuest = L.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y
 });
 
 var ggHybrid = new L.Google('HYBRID');
-var ggStreets = new L.Google('ROADMAP');
+var ggStreets = new L.Google('ROADMAP').addTo(mymap);
 
 var lyrbase=BMStreets;
 
