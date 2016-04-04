@@ -3,7 +3,7 @@
  */
 var zoomDiplay=12;//Zoom inical del mapa
 var layerPredial,layerEep,layerHidrografia,layerLimiteMpio,layerVeredal,layerMot;
-var filtrado;
+var filtradoPredial,filtradoEep,filtradoMot;
 
 /***********************************
  // CONFIGURACION DE MAPA

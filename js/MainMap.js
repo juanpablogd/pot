@@ -145,24 +145,24 @@ var getpredial=function(data){		//console.log("GetPredial");
 		    }
 	  	}
 	});
+
 	if(load==1){
 		load=0;
-		if(filtrado==1){	//console.log("Aplica FILTRO");
-			ControlLayers.removeLayer(layerPredial);
-			mymap.addLayer(layerPredial);
-			mymap.fitBounds(layerPredial.getBounds());
-			/*var zoomActual=mymap.getZoom(); 
-			mymap.setZomm(18);*/
+		ControlLayers.removeLayer(layerPredial);
+		if (filtradoPredial!=undefined) {
+				mymap.addLayer(layerPredial);
+				mymap.fitBounds(layerPredial.getBounds());
 		}	
-	}
-	ControlLayers.addOverlay(layerPredial,'Predial  <button type="button"  onclick="ActivarFiltros(\'FilPREDIAL\')" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-filter" aria-hidden="true"></span></button>');
+	}		console.log(filtradoPredial);
+	var html = 'Predial <button type="button"  onclick="ActivarFiltros(\'FilPREDIAL\')" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-filter" aria-hidden="true"></span></button> ';
+	if(filtradoPredial==1) html = html + '<button type="button"  onclick="filtradoPredial=0;cargarCapaPredial()" id="btnLimpiarPred" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>';
+	html = html + '<br><img src="img/Leyenda/Predial.png" style="position: relative;left: 15px;top: 4px;" height="24px"/>'; 								
+	ControlLayers.addOverlay(layerPredial,html);
 };
 
 var getnodos=function(data){
-	//console.log(data);
-	
-	var load=1;
-	console.log("Está cargado? " + mymap.hasLayer(layerEep));
+	console.log("Funcion Nodos!!!");
+	var load=1;	
   	if(mymap.hasLayer(layerEep)){
             mymap.removeLayer(layerEep);
             ControlLayers.removeLayer(layerEep);
@@ -171,13 +171,19 @@ var getnodos=function(data){
 	layerEep = L.geoJson(data,{
 		onEachFeature: onEachFeature
 	});
-	//console.log("Load: " + load);
+	
 	if(load==1){
-		load=0;	
-	}
-	//console.log("Load: " + load);
-
-	ControlLayers.addOverlay(layerEep,'Estructura Ecológica Ppal. (EEP)  <button type="button"  onclick="ActivarFiltros(\'FilEEP\')" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-filter" aria-hidden="true"></span></button>');
+		load=0;
+		ControlLayers.removeLayer(layerEep);
+		if (filtradoEep!=undefined){
+			mymap.addLayer(layerEep); 
+			mymap.fitBounds(layerEep.getBounds());
+		}
+	}	//console.log("filtradoEep: " + filtradoEep);
+	
+	var html = 'Estructura Ecológica Ppal. (EEP)  <button type="button"  onclick="ActivarFiltros(\'FilEEP\')" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-filter" aria-hidden="true"></span></button>';
+	if(filtradoEep==1) html = html + '<button type="button"  onclick="filtradoEep=0;cargarCapaEep()" id="btnLimpiarEep" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>';
+	ControlLayers.addOverlay(layerEep,html);
 
 };
 var getMot=function(data){	//console.log(data);
@@ -200,17 +206,18 @@ var getMot=function(data){	//console.log(data);
 		    	return {color: "#a1d99b"};
 		    }
 	  	}
-	});
-	//console.log("Load: " + load);
+	});	//console.log("Load: " + load);
 	if(load==1){
 		load=0;
-		if(filtrado==1){
-			ControlLayers.removeLayer(layerMot);
+		ControlLayers.removeLayer(layerMot);
+		if (filtradoMot!=undefined){
 			mymap.addLayer(layerMot);
 			mymap.fitBounds(layerMot.getBounds());
 		}
 	}	//console.log("Load: " + load);
-	ControlLayers.addOverlay(layerMot,'Modelo de Ordenamiento del Territorio. (MOT)  <button type="button"  onclick="ActivarFiltros(\'FilMOT\')" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-filter" aria-hidden="true"></span></button>');
+	var html = 'Modelo de Ordenamiento del Territorio. (MOT) <button type="button"  onclick="ActivarFiltros(\'FilMOT\')" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-filter" aria-hidden="true"></span></button>';
+	if(filtradoMot==1) html = html + '<button type="button"  onclick="filtradoMot=0;cargarMot()" id="btnLimpiarMot" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>';
+	ControlLayers.addOverlay(layerMot,html);
 };
 var getHidrografia=function(data){
 	//console.log(data);
@@ -230,12 +237,10 @@ var getHidrografia=function(data){
 	}
 	//console.log("Load: " + load);
 
-	ControlLayers.addOverlay(layerHidrografia,'Hidrografía');
+	ControlLayers.addOverlay(layerHidrografia,'<img src="img/Leyenda/Hidro.png" height="24px" width="24px" /> Hidrografía');
 
 };
 var getLimiteMpio=function(data){
-	//console.log(data);
-	
 	var load=1;
   	if(mymap.hasLayer(layerLimiteMpio)){
             mymap.removeLayer(layerLimiteMpio);
@@ -244,16 +249,13 @@ var getLimiteMpio=function(data){
     }
 	layerLimiteMpio = L.geoJson(data,{
 	    style: StyleLimiteMpio
-	});
-	//console.log("Load: " + load);
+	});		//console.log("Load: " + load);
 	if(load==1){
 		mymap.addLayer(layerLimiteMpio);
 		mymap.fitBounds(layerLimiteMpio.getBounds());
 		load=0;	
 	}
-	//console.log("Load: " + load);
-
-	ControlLayers.addOverlay(layerLimiteMpio,'Límite Municipal');
+	ControlLayers.addOverlay(layerLimiteMpio,'<img src="img/Leyenda/LimMpio.png" height="24px" width="24px" /> Límite Municipal ');
 
 };
 var getLimiteVeredal=function(data){
@@ -275,37 +277,11 @@ var getLimiteVeredal=function(data){
 	}
 	//console.log("Load: " + load);
 
-	ControlLayers.addOverlay(layerVeredal,'Límite Veredal');
+	ControlLayers.addOverlay(layerVeredal,'<img src="img/Leyenda/LimVere.png" height="24px" width="24px" /> Límite Veredal');
 
 };
-var getnodos=function(data){
-	var load=1;			//console.log("visible " + mymap.hasLayer(layerEep));
-  	if(mymap.hasLayer(layerEep)){
-            mymap.removeLayer(layerEep);
-            ControlLayers.removeLayer(layerEep);
-            load=1;
-    }
-	layerEep = L.geoJson(data,{
-								onEachFeature: onEachFeature,
-								style: function(feature) {
-									if (feature.properties.clasificac != "EMBLASE" && feature.properties.clasificac != "EMBALSE") {
-								    	return {color: "#a1d99b"};
-								    }
-							  	}
-							  });
-	//console.log("Load: " + load);
-	if(load==1){
-		load=0;
-		if(filtrado==1){
-			ControlLayers.removeLayer(layerEep);
-			mymap.addLayer(layerEep);
-			mymap.fitBounds(layerEep.getBounds());
-		}
-	}
-	ControlLayers.addOverlay(layerEep,'Estructura Ecológica Ppal. (EEP)  <button type="button"  onclick="ActivarFiltros(\'FilEEP\')" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-filter" aria-hidden="true"></span></button>');
-};
 
- var cargarCapaPredial=function(condicional){
+ var cargarCapaPredial=function(condicional){	//console.log(condicional); //&maxFeatures=50
 	    $.ajax({
           	url: "http://sofytek.com.co:8080/geoserver/pot/ows?"+
       		  "service=WFS&version=1.0.0&request=GetFeature"+
@@ -324,7 +300,7 @@ var getnodos=function(data){
 	    });
   };
   
-var cargarMot=function(condicional){	//console.log(condicional);
+var cargarMot=function(condicional){	//console.log(condicional); //&maxFeatures=50
 	    $.ajax({
           	url: "http://sofytek.com.co:8080/geoserver/pot/ows?"+
       		  "service=WFS&version=1.0.0&request=GetFeature"+
@@ -339,7 +315,7 @@ var cargarMot=function(condicional){	//console.log(condicional);
 	     });
 };
 
-var cargarHidrografia=function(condicional){	//console.log(condicional);
+var cargarHidrografia=function(condicional){	//console.log(condicional); //&maxFeatures=50
 	waitingDialog.show('Cargando...');
     $.ajax({
       	url: "http://sofytek.com.co:8080/geoserver/pot/ows?"+
@@ -362,7 +338,7 @@ var cargarHidrografia=function(condicional){	//console.log(condicional);
 	 });
 };
 
-var cargarLimiteMpio=function(condicional){	//console.log(condicional);
+var cargarLimiteMpio=function(condicional){		//console.log(condicional); //&maxFeatures=50
 	    $.ajax({
           	url: "http://sofytek.com.co:8080/geoserver/pot/ows?"+
       		  "service=WFS&version=1.0.0&request=GetFeature"+
@@ -392,11 +368,11 @@ var cargarLimiteVeredal=function(condicional){	//console.log(condicional);
 	     });
 };
    
- var cargarCapaEep=function(condicional){	//console.log(condicional);
+ var cargarCapaEep=function(condicional){	//console.log(condicional); //&maxFeatures=50
 	    $.ajax({
           	url: "http://sofytek.com.co:8080/geoserver/pot/ows?"+
       		  "service=WFS&version=1.0.0&request=GetFeature"+
-      		  "&typeName=pot:g_eep&maxFeatures=500&outputFormat=text/javascript"+
+      		  "&typeName=pot:g_eep&outputFormat=text/javascript"+
       		  "&format_options=callback:getnodos",
       		  data:{
       		  	srsName:'EPSG:4326',

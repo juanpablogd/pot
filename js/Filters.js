@@ -25,7 +25,7 @@ function ActivarFiltros(tipo){
 		                    alert('Seleccione por favor!');
 		                    return false;
 		                }else{
-							filtrado = 1;
+							filtradoEep = 1;
 		                	var condicional = clave + " ilike '%"+seleccion.toUpperCase()+"%'";
 		                	cargarCapaEep(condicional);
 		                 	dialogRef.close();
@@ -76,7 +76,7 @@ function ActivarFiltros(tipo){
 		                    alert('Digite el Código Predial');
 		                    return false;
 		                }else{
-							filtrado = 1;
+							filtradoPredial = 1;
 		                	var condicional = clave + " ilike '%"+seleccion.toUpperCase()+"%'";
 		                	cargarCapaPredial(condicional);
 		                 	dialogRef.close();
@@ -120,7 +120,7 @@ function ActivarFiltros(tipo){
 			                    alert('Seleccione por favor!');
 			                    return false;
 			                }else{
-								filtrado = 1;
+								filtradoMot = 1;
 			                	var condicional = clave + " ilike '%"+seleccion.toUpperCase()+"%'";
 			                	cargarMot(condicional);
 			                 	dialogRef.close();
