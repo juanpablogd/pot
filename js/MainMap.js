@@ -169,7 +169,22 @@ var getnodos=function(data){
             load=1;
     }
 	layerEep = L.geoJson(data,{
-		onEachFeature: onEachFeature
+		onEachFeature: onEachFeature,
+		style: function(feature) {
+			if (feature.properties.usos == "CLASES AGROLOGICAS I,II Y III" ) {
+		    	return {color: "#a8a800"};
+		    }else if (feature.properties.usos == "DMI" ) {
+		    	return {color: "#38a800"};
+		    }else if (feature.properties.usos == "RESERVA FORESTAL PRTOECTORA" ) {
+		    	return {color: "#4c7300"};
+		    }else if (feature.properties.usos == "RONDA" || feature.properties.usos == "RONDA EMBALSE" ) {
+		    	return {color: "#97dbf2"};
+		    }else if (feature.properties.usos == "SUELO URBANO" ) {
+		    	return {color: "#636363"};
+		    }else {
+		    	return {color: "#a1d99b"};
+		    }
+	  	}
 	});
 	
 	if(load==1){
