@@ -59,13 +59,15 @@ function onEachMot(feature, layer) {
 			if (feature.properties && feature.properties.popupContent) {
 				popupContent += feature.properties.popupContent;
 			}
-		
-			layer.on({
-		        click:	function () {
-		        	console.log("Click:" + layer.feature.id);
-				}
-		    });
 			layer.bindPopup(popupContent);
+			layer.on({
+		        click:	function (e) {
+		        	//console.log(e.latlng.toString());
+		        	//console.log("Click:" + layer.feature.id);
+				},
+		   });
+
+			
 };
 
 function onEachHidrografia(feature, layer) {
@@ -198,6 +200,7 @@ var getnodos=function(data){
 	
 	var html = 'Estructura Ecológica Ppal. (EEP)  <button type="button"  onclick="ActivarFiltros(\'FilEEP\')" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-filter" aria-hidden="true"></span></button>';
 	if(filtradoEep==1) html = html + '<button type="button"  onclick="filtradoEep=0;cargarCapaEep()" id="btnLimpiarEep" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>';
+						html = html + '<br><img src="img/Leyenda/leyendaEEP.png" style="position: relative;left: 15px;top: 4px;" height="60px"/>';
 	ControlLayers.addOverlay(layerEep,html);
 
 };
@@ -211,13 +214,39 @@ var getMot=function(data){	//console.log(data);
 	layerMot = L.geoJson(data,{
 		onEachFeature: onEachMot,
 		style: function(feature) {
-			if (feature.properties.clasificac == "URBANO" ) {
+			if (feature.properties.usos == "AGROPECUARIO TRADICIONAL" ) {
+				return {color: "#ffebaf"};
+			}else if (feature.properties.usos == "AREA DE EXPANSION" ) {
+		    	return {color: "#ffd4e8"};
+			}else if (feature.properties.usos == "CLASES AGROLOGICAS I,II Y III" ) {
+		    	return {color: "#a8a800"};
+			}else if (feature.properties.usos == "COLAS DEL MUÑA") {
+		    	return {color: "#004da8"};
+			}else if (feature.properties.usos == "CONSERVACION PRIORITARIA DE AGUA") {
+		    	return {color: "#17a8e8"};
+			}else if (feature.properties.usos == "CORREDOR ECOTURISTICO") {
+		    	return {color: "#a3ff73"};
+			}else if (feature.properties.usos == "CORREDOR INDUSTRIAL SUBURBANO") {
+		    	return {color: "#c500ff"};
+			}else if (feature.properties.usos == "CORREDOR SUBURBANO") {
+		    	return {color: "#e69800"};
+			}else if (feature.properties.usos == "CPR") {
+		    	return {color: "#b2b2b2"};
+			}else if (feature.properties.usos == "CULTIVOS BAJO INVERNADERO") {
+		    	return {color: "#732600"};
+			}else if (feature.properties.usos == "DMI") {
+		    	return {color: "#38a800"};
+			}else if (feature.properties.usos == "PARQUE ECOLOGICO" || feature.properties.usos == "RESERVA FORESTAL PRTOECTORA"  || feature.properties.usos == "RESERVA FORESTAL PROTECTORA") {
+		    	return {color: "#4c7300"};
+			}else if (feature.properties.usos == "RESIDENCIAL SUBURBANO" ) {
+		    	return {color: "#ffff00"};
+			}else if (feature.properties.usos == "RESTAURACION MORFOLOGICA" ) {
+		    	return {color: "#ffa77f"};
+			}else if (feature.properties.usos == "Suelo_Industria" || feature.properties.usos == "SUELO RURAL INDUSTRIAL") {
+		    	return {color: "#df73ff"};
+			}else if (feature.properties.usos == "URBANO" || feature.properties.usos == "SUELO URBANO") {
 		    	return {color: "#525252"};
-		    }else if (feature.properties.clasificac == "RURAL" ) {
-		    	return {color: "#969696"};
-		    }else if (feature.properties.clasificac == "SUBURBANO" ) {
-		    	return {color: "#cccccc"};
-		    }else if (feature.properties.clasificac == "PROTECCIÓN" || feature.properties.clasificac == "PRTECCIÓN") {
+		    }else if (feature.properties.usos == "PROTECCIÓN" || feature.properties.usos == "PRTECCIÓN" || feature.properties.usos == "SUELO PROTECCION" || feature.properties.usos == "RFPP RIO BOGOTA") {
 		    	return {color: "#a1d99b"};
 		    }
 	  	}
@@ -232,6 +261,7 @@ var getMot=function(data){	//console.log(data);
 	}	//console.log("Load: " + load);
 	var html = 'Modelo de Ordenamiento del Territorio. (MOT) <button type="button"  onclick="ActivarFiltros(\'FilMOT\')" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-filter" aria-hidden="true"></span></button>';
 	if(filtradoMot==1) html = html + '<button type="button"  onclick="filtradoMot=0;cargarMot()" id="btnLimpiarMot" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>';
+						html = html + '<br><img src="img/Leyenda/leyendaMOT.png" style="position: relative;left: 20px;top: 4px;" height="150px"/>';
 	ControlLayers.addOverlay(layerMot,html);
 };
 var getHidrografia=function(data){
@@ -315,7 +345,7 @@ var getLimiteVeredal=function(data){
 	    });
   };
   
-var cargarMot=function(condicional){	//console.log(condicional); //&maxFeatures=50
+var cargarMot=function(condicional){	//console.log(condicional); //&maxFeatures=10
 	    $.ajax({
           	url: "http://sofytek.com.co:8080/geoserver/pot/ows?"+
       		  "service=WFS&version=1.0.0&request=GetFeature"+
@@ -401,9 +431,9 @@ var cargarLimiteVeredal=function(condicional){	//console.log(condicional);
 cargarLimiteMpio();  
 cargarLimiteVeredal();
 cargarHidrografia();
-cargarCapaPredial();
+//cargarCapaPredial();
 cargarMot();
-cargarCapaEep();
+//cargarCapaEep();
 
 var overlayMaps = { };
 
