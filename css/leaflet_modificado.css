@@ -11,4 +11,8 @@
     right: 1px !important;
     color: #FFFFFF !important;
 }
+.leaflet-label{
+	opacity: 1 !important;
+	z-index: 999 !important;
+}
 

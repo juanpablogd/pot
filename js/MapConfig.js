@@ -2,6 +2,7 @@
  * @author jpgarzon
  */
 var zoomDiplay=12;//Zoom inical del mapa
+var layerPredialAll,layerEepAll,layerMotAll;
 var layerPredial,layerEep,layerHidrografia,layerLimiteMpio,layerVeredal,layerMot;
 var filtradoPredial,filtradoEep,filtradoMot;
 
